@@ -92,4 +92,16 @@ public class BoardController {
 		
 		return "redirect:/boardlist";
 	}
+	
+//	get /boarddelete 가상주소
+//	=> (@RequestParam("num") int num)
+//	=> boardService.deleteById(num)
+//	=> redirect:/boardlist 이동
+	@GetMapping("/boarddelete")
+	public String boarddelete(@RequestParam("num") Integer num) {
+		
+		boardService.deleteById(num);
+		
+		return "redirect:/boardlist";
+	}
 }

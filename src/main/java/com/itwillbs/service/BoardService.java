@@ -45,4 +45,10 @@ public class BoardService {
 		boardRepository.save(board);
 		
 	}
+
+	public void deleteById(Integer num) {
+		
+		 boardRepository.deleteById(num);	
+		
+	}
 }
