@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>test4 title</title>
+	</head>
+	<body>
+		<a th:href="@{http://www.thymeleaf.org}">thymeleaf 홈페이지 이동</a><br>
+		<a th:href="@{/test3}">test3 페이지 이동</a><br>
+		<a th:href="@{/test5(id='kim', pass='p123')}">test5 페이지 이동</a><br>
+		<h1>test4.html</h1>
+		
+		<table>
+			<tr>
+				<th>아이디</th><th>비밀번호</th><th>이름</th><th>가입날짜</th>
+			</tr>
+			<tr th:each="memberDTO,status:${memberList}">
+				<td><span th:text="${memberDTO.id}"></span></td>
+				<td><span th:text="${memberDTO.pass}"></span></td>
+				<td><span th:text="${memberDTO.name}"></span></td>
+				<td><span th:text="${memberDTO.date}"></span></td>
+			</tr>
+		</table>
+	</body>
+</html>

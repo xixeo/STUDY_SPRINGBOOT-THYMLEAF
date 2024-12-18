@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>main title</title>
+	</head>
+	<body>
+		<h1>list.html</h1>
+
+		<table>
+			<tr><th>아이디</th><th>비밀번호</th><th>이름</th><th>가입날짜</th></tr>
+			
+			<tr th:each="member, status:${memberList}"> 
+				<td><span th:text="${member.id}"></span></td>
+				<td><span th:text="${member.pass}"></span></td>
+				<td><span th:text="${member.name}"></span></td>
+				<td><span th:text="${member.date}"></span></td>		
+			</tr>
+		</table>
+	</body>
+</html>
