@@ -3,6 +3,9 @@ package com.itwillbs.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +44,17 @@ public class BoardController {
 	}	
 	//get /boardlist 가상주소 => /board/list.html 이동
 	@GetMapping("/boardlist")
-	public String boardlist(Model model) {
+	public String boardlist(Model model, 
+			@RequestParam(value="page", defaultValue="1", required = false) int page) {
+		
+//		현 페이지 번호 page
+//		한 화면에 보여줄 글 개수
+		int size = 10;
+		
+//		select * from board orderby num desc limit 0, 10
+//		PageRequest에서는 page 0부터 시작 => page -1
+//		PageRequest.of(page, size, 정렬);
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("num").descending());
 		
 		List<Board> boardList = boardService.getBoardList();
 		
