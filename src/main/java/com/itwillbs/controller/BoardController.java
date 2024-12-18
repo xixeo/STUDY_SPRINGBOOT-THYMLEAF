@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -54,11 +55,36 @@ public class BoardController {
 //		select * from board orderby num desc limit 0, 10
 //		PageRequest에서는 page 0부터 시작 => page -1
 //		PageRequest.of(page, size, 정렬);
-		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("num").descending());
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by("num").descending());		
+	
 		
-		List<Board> boardList = boardService.getBoardList();
+//		List<Board> boardList = boardService.getBoardList();
+		Page<Board> boardList = boardService.getBoardList(pageable);
+				
 		
-		model.addAttribute("boardList", boardList);
+		model.addAttribute("boardList", boardList);		
+		
+		model.addAttribute("currentPage", page);
+		model.addAttribute("pageSize", size);
+//		전체 페이지 번호
+		model.addAttribute("totalPages", boardList.getTotalPages());
+		
+//		한화면에 보여줄 페이지 개수 설정
+		int pageBlock = 10;
+		
+//		한화면에 보여줄 시작 페이지 번호 구하기
+//		1~10 => 1
+//		11~20 => 2
+		int startPage = (page - 1)/pageBlock * pageBlock + 1;
+				
+//		한화면에 보여줄 끝 페이지 번호 구하기
+		int endPage = startPage + pageBlock - 1;
+		if(endPage > boardList.getTotalPages()) {
+			endPage = boardList.getTotalPages();
+		}
+		
+		model.addAttribute("startPage", startPage);
+		model.addAttribute("endPage", endPage);
 		
 		return "/board/list";
 	}

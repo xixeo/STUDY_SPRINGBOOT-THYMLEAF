@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<h1>list.html</h1>
-
+		<a th:href="@{/boardwrite}" th:text="글쓰기"></a><br>
 		<table>
 			<tr><th>글번호</th><th>글제목</th><th>글쓴이</th><th>조회수</th><th>작성날짜</th></tr>
 			
@@ -17,9 +17,26 @@
 					   th:text="${board.subject}"></a>
 				</td>
 				<td align="center" th:text="${board.name}"></td>
-				<td align="center" th:text="${board.readcount}"></td>		
-				<td align="center" th:text="${board.date}">pan></td>		
+				<td align="ce
+				nter" th:text="${board.readcount}"></td>		
+				<td align="center" th:text="${board.date}"></td>		
 			</tr>
 		</table>
+		
+		<a th:href="@{/boardlist(page=${currentPage-1})}" th:if="${currentPage > 1}" th:text="이전"></a>
+		
+	<!--수동 입력
+		<a th:href="@{/boardlist(page=1)}" th:text="1"></a>
+		<a th:href="@{/boardlist(page=2)}" th:text="2"></a>-->
+		
+		<!--#numbers.sequence(startPage, endPage) => number.sequence(시작, 끝)-->
+		<span th:each="page:${#numbers.sequence(startPage, endPage)}">
+			<span th:if="${page == currentPage}" th:text="${page}"></span>
+			<span th:unless="${page == currentPage}">
+				<a th:href="@{/boardlist(page=${page} )}" th:text="${page}"></a>
+			</span>
+		</span>
+		
+		<a th:href="@{/boardlist(page=${currentPage-1})}" th:if="${currentPage < totalPage}" th:text="다음"></a>
 	</body>
 </html>

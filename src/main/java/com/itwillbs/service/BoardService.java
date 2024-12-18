@@ -1,9 +1,10 @@
 package com.itwillbs.service;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.BoardDTO;
@@ -30,8 +31,13 @@ public class BoardService {
 		boardRepository.save(board);
 	}
 
-	public List<Board> getBoardList() {
-		return boardRepository.findAll();
+//	public List<Board> getBoardList() {
+//		return boardRepository.findAll();
+//	}
+	
+	public Page<Board> getBoardList(Pageable pageable){
+	
+		return boardRepository.findAll(pageable);
 	}
 
 	public Optional<Board> findById(Integer num) {
