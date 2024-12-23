@@ -47,6 +47,19 @@ dependencies {
 	// 3. window - preferences - General - Workspace - build - Build automatically
 	// 4. 크롬 - 설정 - 확장프로그램 관리하기 Live reload
 	// 5. application.properties 설정
+	
+	// springsecurit
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	
+	// springsecurit test
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+	testImplementation 'org.springframework.security:spring-security-test'
+	
+	// springsecurit thymeleaf-extras-springsecurity
+	// https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	
 }
 
 tasks.named('test') {

@@ -54,6 +54,9 @@ public class Board {
 	
 	@Column(name = "date")
 	private Timestamp date;
+	
+	@Column(name ="file")
+	private String file;
 		
 	public static Board setBoardEntity(BoardDTO boardDTO) {
 		
@@ -64,6 +67,7 @@ public class Board {
 		board.setContent(boardDTO.getContent());
 		board.setReadcount(boardDTO.getReadcount());
 		board.setDate(boardDTO.getDate());
+		board.setFile(boardDTO.getFile());
 		
 		return board;
 	}

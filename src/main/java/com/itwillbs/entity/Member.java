@@ -2,6 +2,8 @@ package com.itwillbs.entity;
 
 import java.sql.Timestamp;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.itwillbs.domain.MemberDTO;
 
 import jakarta.persistence.Column;
@@ -44,6 +46,31 @@ public class Member {
 	@Column(name = "date")
 	private Timestamp date;
 	
+//	권한 컬럼 => 일반 사용자 USER, 관리자 ADMIN
+	@Column(name = "role")
+	private String role;
+	
+//	스프링 시큐리티 : 애플리케이션 인증, 인가를 일관된 형태로 처리하는 모듈
+//	인증 : 로그인 사용자 식별
+//	인가 : 시스템 자원에 대한 접근을 통제
+	
+//	SecurityFilterChain -> 인증
+//						-> 인가
+	
+//	생성자
+	public Member() {
+		
+	}
+	
+	public Member(String id, String pass, String name, String roleUser, Timestamp date) {
+		this.id = id;
+		this.pass = pass;
+		this.name = name;
+		this.role = roleUser;
+		this.date = date;
+	}
+	
+	
 	public static Member setMemberEntity(MemberDTO memberDTO) {
 		
 		Member member = new Member();
@@ -52,8 +79,26 @@ public class Member {
 		member.setPass(memberDTO.getPass());
 		member.setName(memberDTO.getName());
 		member.setDate(memberDTO.getDate());
+		member.setRole(memberDTO.getRole());
 		
 		return member;
 	}
-
+	
+//	회원가입
+	public static Member createUser(MemberDTO memberDTO, PasswordEncoder passwordEncoder) {
+		
+		String roleUser = null;
+		
+		if(memberDTO.getId().equals("admin")) {
+			roleUser = "ADMIN";
+			
+		}else {
+			roleUser = "USER";
+		}
+		return new Member(memberDTO.getId(), 
+							passwordEncoder.encode(memberDTO.getPass()), 
+							memberDTO.getName(), roleUser, 
+							new Timestamp(System.currentTimeMillis()));		
+		
+	}
 }

@@ -1,17 +1,22 @@
 package com.itwillbs.controller;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.domain.BoardDTO;
 import com.itwillbs.entity.Board;
@@ -27,6 +32,10 @@ public class BoardController {
 
 	
 	private final BoardService boardService;
+//	파일 위치 가져오기
+	@Value("${uploadPath}")
+	String uploadPath;
+	
 	
 	//get /boardwrite 가상주소 => /borad/writhe.html 이동
 	@GetMapping("/boardwrite")
@@ -141,6 +150,43 @@ public class BoardController {
 		
 		boardService.deleteById(num);
 		
+		return "redirect:/boardlist";
+	}
+	
+//	get /fboardwrite 가상주소 => /board/fwrite.html 이동
+	@GetMapping("/fboardwrite")
+	public String fboardwrite() {
+		return "/board/fwrite";
+	}
+		
+//	post /fboardwrite 가상주소 => 게시판 글쓰기 BoardDTO 전달받아서
+//	boardService.save(boardDTO) 호출
+//	=> readcount=0, 오늘날짜, => setBoardEntity
+//	=> boardRepository.save() 메서드호출
+	@PostMapping("/fboardwrite")
+	public String fboardwrite(@RequestParam("name") String name, 
+			@RequestParam("subject") String subject,
+			@RequestParam("content") String content,
+			@RequestParam("file") MultipartFile file) throws IOException {
+		
+//		첨부파일 랜덤문자_파일이름
+		UUID uuid = UUID.randomUUID();
+		
+		String filename = uuid.toString() + "_" + file.getOriginalFilename();
+		
+//		첨부파일 => upload 복사
+//		FileCopyUtils.copy(file.getBytes(), new File(파일위치, filename));
+		FileCopyUtils.copy(file.getBytes(), new File(uploadPath, filename));
+		
+//		BoardDTO 담아서
+		BoardDTO boardDTO = new BoardDTO();
+		boardDTO.setName(name);
+		boardDTO.setSubject(subject);
+		boardDTO.setContent(content);
+		boardDTO.setFile(filename);
+		
+		boardService.save(boardDTO);
+
 		return "redirect:/boardlist";
 	}
 }

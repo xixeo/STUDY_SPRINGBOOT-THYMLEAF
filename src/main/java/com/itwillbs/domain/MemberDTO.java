@@ -31,4 +31,6 @@ public class MemberDTO {
 	private String name;
 	private Timestamp date;
 	
+	private String role;
+	
 }

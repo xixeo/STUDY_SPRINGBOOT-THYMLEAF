@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.MemberDTO;
@@ -19,16 +20,22 @@ import lombok.extern.java.Log;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
+	
+	private final PasswordEncoder passwordEncoder;
 
 	public void save(MemberDTO memberDTO) {
 
 		memberDTO.setDate(new Timestamp(System.currentTimeMillis()));
 
-		Member member = new Member();
-		member.setId(memberDTO.getId());
-		member.setPass(memberDTO.getPass());
-		member.setName(memberDTO.getName());
-		member.setDate(memberDTO.getDate());
+//		Member member = new Member();
+//		member.setId(memberDTO.getId());
+//		member.setPass(memberDTO.getPass());
+//		member.setName(memberDTO.getName());
+//		member.setDate(memberDTO.getDate());
+		
+//		Member member = Member.setMemberEntity(memberDTO);
+		
+		Member member = Member.createUser(memberDTO, passwordEncoder);
 
 		memberRepository.save(member);
 	}

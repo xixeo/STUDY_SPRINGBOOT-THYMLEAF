@@ -22,4 +22,6 @@ public class BoardDTO {
 	private int readcount;
 	
 	private Timestamp date;
+
+	public String file;
 }

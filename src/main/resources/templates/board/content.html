@@ -11,6 +11,7 @@
 		제목 : <span th:text="${board.subject}"></span><br>
 		조회수 : <span th:text="${board.readcount}"></span><br>
 		가입날짜 : <span th:text="${board.date}"></span><br>
+		파일 : <span><a th:href="@{/upload/{board.file}}" th:text="${board.file}"></a></span>
 		<span th:if="${session.id == board.name}">
 		         <a th:href="@{/boardupdate(num=${board.num})}" th:text="수정하기"></a>
 		         <a th:href="@{/boarddelete(num=${board.num})}" th:text="삭제하기"></a>
